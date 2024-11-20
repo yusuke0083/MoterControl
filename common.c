@@ -6,6 +6,7 @@
 #include "./Pin_number_pico.h"
 #endif
 
+#include "./common.h"
 
 // Perform initialisation
 int pico_init(void) {

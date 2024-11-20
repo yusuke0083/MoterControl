@@ -8,6 +8,8 @@
 #include "./Pin_number_pico.h"
 #endif
 
+#include "./mtr.h"
+
 // 関数宣言
 void MTR_set(int8_t motor_pin1, int8_t motor_pin2);
 #ifndef debugSW
