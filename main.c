@@ -28,13 +28,17 @@
 int main() {
 
     int rc = pico_init();
-    pico_set_led(true);
 
+    if(rc = PICO_OK){
     /* IR_Control */
     /* 外部からのモータ操作実装予定 */
 
     /* MTR_control */
     MTR_main();
+    
+    }else{
+    /* モニター実装時エラー表示予定 */        
+    }
 
   
 }
