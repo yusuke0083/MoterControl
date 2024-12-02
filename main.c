@@ -20,8 +20,6 @@
 // 関数宣言
 
 
-
-
 int main() {
 
     int rc = pico_init();
@@ -34,7 +32,13 @@ int main() {
     MTR_main();
     
     }else{
-    /* モニター実装時エラー表示予定 */        
+    /* モニター実装時エラー表示予定 */
+    while (true) {
+        gpio_put(LED_PIN, 1);
+        sleep_ms(100);
+        gpio_put(LED_PIN, 0);
+        sleep_ms(100);
+   }            
     }
   
 }
