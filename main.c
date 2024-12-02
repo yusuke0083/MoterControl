@@ -12,11 +12,8 @@
 #include "./Pin_number_pico.h"
 #include "./mtr.h"
 #include "./common.h"
-// #include "./include/common/common.h"
 
-// #ifndef LED_DELAY_MS
-// #define LED_DELAY_MS 10000
-// #endif
+
 
 #define debugSW  //　モータ動作確認用コンパイルスイッチ
 
@@ -39,7 +36,6 @@ int main() {
     }else{
     /* モニター実装時エラー表示予定 */        
     }
-
   
 }
 
