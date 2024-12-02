@@ -18,6 +18,7 @@ void MTR_pwmconfig_set(pwm_config pin_number);
 
 
 void MTR_main(void){
+    gpio_set_function( MTR_SW_PIN, GPIO_FUNC_SIO);
     gpio_put(MTR_SW_PIN, 1);
     MTR_set(MTR1_PIN, MTR2_PIN); 
 
@@ -88,6 +89,8 @@ void MTR_main(void){
 }
 
 void MTR_set(int8_t motor_pin1, int8_t motor_pin2){ 
+    gpio_set_function( motor_pin1, GPIO_FUNC_SIO);
+    gpio_set_function( motor_pin2, GPIO_FUNC_SIO);
     gpio_put(motor_pin1, 0);
     gpio_put(motor_pin2, 0);    
 }
