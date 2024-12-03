@@ -15,7 +15,7 @@
 
 
 
-#define debugSW  //　モータ動作確認用コンパイルスイッチ
+
 
 // 関数宣言
 
@@ -24,7 +24,7 @@ int main() {
 
     int rc = pico_init();
 
-    if(rc = PICO_OK){
+    if(rc == PICO_OK){
     /* IR_Control */
     /* 外部からのモータ操作実装予定 */
 
