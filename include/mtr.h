@@ -1,6 +1,8 @@
 #ifndef _MTR_H_
 
-#define debugSW  //　モータ動作確認用コンパイルスイッチ
+
+#include "./conpile_sw.h"
+
 
 /* 関数宣言 */
 void MTR_main(void);

@@ -1,7 +1,5 @@
 #ifndef _COMMON_H_
  
-
-
 extern bool led_on;
 
 /* 関数宣言 */
