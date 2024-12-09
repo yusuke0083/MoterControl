@@ -36,18 +36,21 @@ void MTR_main(void){
    }
 
 #else
-    pwm_config pwm1_slice_config;
-    pwm_config pwm2_slice_config;
+    static pwm_config pwm1_slice_config;
+    static pwm_config pwm2_slice_config;
     uint    pwm1_slice_num;
     uint    pwm2_slice_num;
-    uint8_t i;
+    uint8_t i1, i2;
  
+    gpio_set_function( MTR_SW_PIN, GPIO_FUNC_SIO);
+    gpio_put(MTR_SW_PIN, 1);
+
     // GPIOにPWMを割り当て
     {
-    gpio_set_function( MTR1_PIN, GPIO_FUNC_PWM);
-    gpio_set_function( MTR2_PIN, GPIO_FUNC_PWM);
-    pwm1_slice_num = pwm_gpio_to_slice_num(MTR1_PIN);
-    pwm2_slice_num = pwm_gpio_to_slice_num(MTR2_PIN);
+        gpio_set_function( MTR1_PIN, GPIO_FUNC_PWM);
+        gpio_set_function( MTR2_PIN, GPIO_FUNC_PWM);
+        pwm1_slice_num = pwm_gpio_to_slice_num(MTR1_PIN);
+        pwm2_slice_num = pwm_gpio_to_slice_num(MTR2_PIN);
     }
 
     // PWMコンフィグを編集
@@ -58,9 +61,9 @@ void MTR_main(void){
     
     /* PWMコンフィグを反映 */
     {
-    // 対象のスライス値のPWMをコンフィグデータで開始する
-    pwm_init( pwm1_slice_num, &pwm1_slice_config, true );
-    pwm_init( pwm2_slice_num, &pwm2_slice_config, true );
+        // 対象のスライス値のPWMをコンフィグデータで開始する
+        pwm_init( pwm1_slice_num, &pwm1_slice_config, true );
+        pwm_init( pwm2_slice_num, &pwm2_slice_config, true );
     }
     
     // /* 全スライス同時スタート */
@@ -74,14 +77,22 @@ void MTR_main(void){
     do{
         gpio_put(LED_PIN, 1);
         // MTR_set(true, false);
-        for(i = 0; i < 10; i++)
+        for(i1 = 0; i1 < 10; i1 ++)
         {
-            duty_pin1 = i / 10;
+            duty_pin1 = i1 / 10;
             pwm_set_gpio_level( MTR1_PIN,  (pwm1_slice_config.top * duty_pin1));
+            sleep_ms(3000);
+        }
+
+        duty_pin1 = 0;
+        gpio_put(LED_PIN, 0);
+        for(i2 = 0; i2 < 10; i2 ++)
+        {
+            duty_pin2 = i2 / 10;
             pwm_set_gpio_level( MTR2_PIN,  (pwm1_slice_config.top * duty_pin2));
             sleep_ms(3000);
         }
-        gpio_put(LED_PIN, 0);
+        
         // MTR_set(false, false);
         sleep_ms(1000);
     }while(true);
