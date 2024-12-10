@@ -12,8 +12,11 @@
 #include "./mtr.h"
 
 // 関数宣言
+#ifdef debugSW
 void MTR_set(int8_t motor_pin1, int8_t motor_pin2);
-#ifndef debugSW
+
+
+#else
 void MTR_pwmconfig_set(pwm_config pin_number);
 #endif
 
@@ -21,9 +24,11 @@ void MTR_pwmconfig_set(pwm_config pin_number);
 void MTR_main(void){
     gpio_set_function( MTR_SW_PIN, GPIO_FUNC_SIO);
     gpio_put(MTR_SW_PIN, 1);
-    MTR_set(MTR1_PIN, MTR2_PIN); 
 
 #ifdef debugSW
+
+    MTR_set(MTR1_PIN, MTR2_PIN); 
+
     while (true) {
         gpio_put(LED_PIN, 1);
         gpio_put(MTR1_PIN, 1);
@@ -36,14 +41,12 @@ void MTR_main(void){
    }
 
 #else
-    static pwm_config pwm1_slice_config;
-    static pwm_config pwm2_slice_config;
+    static  pwm_config pwm1_slice_config;
+    static  pwm_config pwm2_slice_config;
     uint    pwm1_slice_num;
     uint    pwm2_slice_num;
     uint8_t i1, i2;
  
-    gpio_set_function( MTR_SW_PIN, GPIO_FUNC_SIO);
-    gpio_put(MTR_SW_PIN, 1);
 
     // GPIOにPWMを割り当て
     {
@@ -66,40 +69,42 @@ void MTR_main(void){
         pwm_init( pwm2_slice_num, &pwm2_slice_config, true );
     }
     
-    // /* 全スライス同時スタート */
-    // {
-    //     pwm_mask_enabled = ( 0x01 << pwm1_slice_num ) | ( 0x01 << pwm1_slice_num );
-    //     pwm_set_mask_enabled( pwm_mask_enabled );
-    // }
     
-    float duty_pin1 = 0;
-    float duty_pin2 = 0;
+    uint8_t duty_pin1 = 0;
+    uint8_t duty_pin2 = 0;
     do{
+        /* 順回転PWM制御 */
         gpio_put(LED_PIN, 1);
-        // MTR_set(true, false);
+        pwm_set_gpio_level( MTR2_PIN, duty_pin2);
+       
         for(i1 = 0; i1 < 10; i1 ++)
         {
-            duty_pin1 = i1 / 10;
-            pwm_set_gpio_level( MTR1_PIN,  (pwm1_slice_config.top * duty_pin1));
-            sleep_ms(3000);
+            duty_pin1 = i1 * 100;
+            pwm_set_gpio_level( MTR1_PIN,  duty_pin1);
+            sleep_ms(1000);
         }
 
+        /* 逆回転PWM制御 */
         duty_pin1 = 0;
+        pwm_set_gpio_level( MTR1_PIN,  duty_pin1);
         gpio_put(LED_PIN, 0);
         for(i2 = 0; i2 < 10; i2 ++)
         {
-            duty_pin2 = i2 / 10;
-            pwm_set_gpio_level( MTR2_PIN,  (pwm1_slice_config.top * duty_pin2));
-            sleep_ms(3000);
+            duty_pin2 = i2 * 100;
+            pwm_set_gpio_level( MTR2_PIN,  duty_pin2);
+            sleep_ms(1000);
         }
+        duty_pin2 = 0;
         
-        // MTR_set(false, false);
-        sleep_ms(1000);
+        sleep_ms(5000);
     }while(true);
 
 #endif
 }
 
+
+
+#ifdef debugSW
 void MTR_set(int8_t motor_pin1, int8_t motor_pin2){ 
     gpio_set_function( motor_pin1, GPIO_FUNC_SIO);
     gpio_set_function( motor_pin2, GPIO_FUNC_SIO);
@@ -107,7 +112,7 @@ void MTR_set(int8_t motor_pin1, int8_t motor_pin2){
     gpio_put(motor_pin2, 0);    
 }
 
-#ifndef debugSW
+#else
 void MTR_pwmconfig_set(pwm_config pin_number){
      // PWMコンフィグをデフォルト値で取得
     pin_number = pwm_get_default_config();
