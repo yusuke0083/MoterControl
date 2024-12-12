@@ -26,7 +26,8 @@ int main() {
 
     if(rc == PICO_OK){
     /* IR_Control */
-    /* 外部からのモータ操作実装予定 */
+    CTL_main();
+
 
     /* MTR_control */
     MTR_main();
