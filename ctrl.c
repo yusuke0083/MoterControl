@@ -1,5 +1,7 @@
 
 #ifndef _CTRL_H_
+#define _CTRL_H_
+
 #include <stdio.h>
 #include <stdint.h>
 #include "pico/stdlib.h"
