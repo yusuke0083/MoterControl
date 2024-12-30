@@ -10,7 +10,7 @@
 #include "./Pin_number_pico.h"
 
 #include "./ctrl.h"
-#include "hardware/adc.h"
+//#include "hardware/adc.h"
 
 #endif
 

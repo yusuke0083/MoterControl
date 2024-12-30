@@ -26,7 +26,7 @@ int main() {
 
     if(rc == PICO_OK){
     /* IR_Control */
-    CTL_main();
+    CTR_main();
 
 
     /* MTR_control */
