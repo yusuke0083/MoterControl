@@ -6,7 +6,7 @@
 #include "hardware/gpio.h"
 #include "hardware/pwm.h"
 #include "./Pin_number_pico.h"
-
+#include "./common.h"
 #include "./mtr.h"
 
 /* 構造体 */
@@ -46,11 +46,10 @@ void MTR_main(void)
 {
     uint16_t mtr_pin1_duty = 0;
     uint16_t mtr_pin2_duty = 0;
- 
+
     if(mtr_start_flag == 0){
         //PWM初期化
         MTR_init();
-
         gpio_put(LED_PIN, 1);
 
         //順回転始動
@@ -61,7 +60,7 @@ void MTR_main(void)
     }else
     {
         //減速処理
-        if(mtr_dutymax_flag == 1)
+        if(mtr_dutymax_flag == Y_ON)
         {
             if(Mtr_front_reft_motor.axis_old == 1)
             {
@@ -75,7 +74,7 @@ void MTR_main(void)
             //停止判定
             if(Mtr_front_reft_motor.pin1_duty == Mtr_front_reft_motor.pin2_duty)
             {
-                mtr_dutymax_flag = 0;
+                mtr_dutymax_flag = Y_OFF;
                 gpio_put(LED_PIN, 0);
             }
 
@@ -90,9 +89,10 @@ void MTR_main(void)
             }
             
             //デューティ値最大到達判定
-            if(Mtr_front_reft_motor.pin1_duty == mtr_duty_max || Mtr_front_reft_motor.pin2_duty == mtr_duty_max)
+            if(Mtr_front_reft_motor.pin1_duty == mtr_duty_max 
+            || Mtr_front_reft_motor.pin2_duty == mtr_duty_max)
             {
-                mtr_dutymax_flag = 1;
+                mtr_dutymax_flag = Y_ON;
             }
         }
     }
@@ -114,6 +114,18 @@ void MTR_main(void)
     pwm_set_gpio_level( MTR1_PIN,  mtr_pin1_duty);
     pwm_set_gpio_level( MTR2_PIN,  mtr_pin2_duty);
     
+    uint8_t LED_cnt = 0;
+    LED_cnt = Mtr_front_reft_motor.pin1_duty + Mtr_front_reft_motor.pin2_duty;
+    for(uint8_t i = 0; i < LED_cnt; i++)
+    {
+        gpio_put(LED_PIN, 1);
+        sleep_ms(100);
+        gpio_put(LED_PIN, 0);
+        sleep_ms(100);
+    }
+    
+    sleep_ms(3000);
+
     Mtr_front_reft_motor.axis_old = Mtr_front_reft_motor.axis;
 
 }

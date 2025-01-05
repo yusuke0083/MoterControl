@@ -25,21 +25,22 @@ int main() {
     int rc = pico_init();
 
     if(rc == PICO_OK){
+    while(true){
     /* IR_Control */
-    CTR_main();
-
+    CRL_main();
 
     /* MTR_control */
     MTR_main();
+    }
     
     }else{
     /* モニター実装時エラー表示予定 */
-    while (true) {
-        gpio_put(LED_PIN, 1);
-        sleep_ms(100);
-        gpio_put(LED_PIN, 0);
-        sleep_ms(100);
-   }            
+        while (true) {
+            gpio_put(LED_PIN, 1);
+            sleep_ms(100);
+            gpio_put(LED_PIN, 0);
+            sleep_ms(100);
+       }            
     }
   
 }

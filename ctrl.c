@@ -20,7 +20,7 @@
 
 // 関数宣言
 
-void CTR_main(void){
+void CRL_main(void){
 
     /* Joystic */
 

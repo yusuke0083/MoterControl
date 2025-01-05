@@ -7,7 +7,7 @@
 
 
 /* 関数宣言 */
-void CTR_main(void);
+void CRL_main(void);
 
 int CTR_axis(void);
 bool CTR_sw(void); 
