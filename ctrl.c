@@ -4,6 +4,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <math.h>
 #include "pico/stdlib.h"
 #include "hardware/gpio.h"
 #include "hardware/pwm.h"
@@ -45,10 +46,10 @@ void CRL_main(void){
     ctr_yaxis = adc_read();
       
     // 電圧をduty値に変換
-    Ctr_xaxis_voltage = ctr_xaxis / 4095;
-    Ctr_yaxis_voltage = ctr_yaxis / 4095;
+    ctr_xaxis_voltage = (ctr_xaxis / 4095) * 10;
+    ctr_yaxis_voltage = (ctr_yaxis / 4095) * 10;
     
-    Ctr_duty_xaxis = floor(Ctr_xaxis_voltage *10);
-    Ctr_duty_yaxis = floor(Ctr_yaxis_voltage *10);
+    Ctr_duty_xaxis = floor(ctr_xaxis_voltage);
+    Ctr_duty_yaxis = floor(ctr_yaxis_voltage);
 
 }
