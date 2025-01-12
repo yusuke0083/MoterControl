@@ -49,6 +49,7 @@ target_include_directories(blink PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 # pull in common dependencies
 target_link_libraries(blink pico_stdlib)
 target_link_libraries(blink pico_stdlib hardware_pwm)
+target_link_libraries(blink pico_stdlib hardware_adc)
 
 #サブフォルダ(ライブラリ)指定
 #target_link_libraries(blink src)

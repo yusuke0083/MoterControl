@@ -111,8 +111,8 @@ void MTR_main(void)
     
     mtr_pin1_duty = Mtr_front_reft_motor.pin1_duty * 100;
     mtr_pin2_duty = Mtr_front_reft_motor.pin2_duty * 100;
-    pwm_set_gpio_level( MTR1_PIN,  mtr_pin1_duty);
-    pwm_set_gpio_level( MTR2_PIN,  mtr_pin2_duty);
+    pwm_set_gpio_level( MTR1_PIN1,  mtr_pin1_duty);
+    pwm_set_gpio_level( MTR1_PIN2,  mtr_pin2_duty);
     
     uint8_t LED_cnt = 0;
     LED_cnt = Mtr_front_reft_motor.pin1_duty + Mtr_front_reft_motor.pin2_duty;
@@ -147,10 +147,10 @@ void MTR_init(void){
 
     // GPIOにPWMを割り当て
     {
-        gpio_set_function( MTR1_PIN, GPIO_FUNC_PWM);
-        gpio_set_function( MTR2_PIN, GPIO_FUNC_PWM);
-        pwm1_slice_num = pwm_gpio_to_slice_num(MTR1_PIN);
-        pwm2_slice_num = pwm_gpio_to_slice_num(MTR2_PIN);
+        gpio_set_function( MTR1_PIN1, GPIO_FUNC_PWM);
+        gpio_set_function( MTR1_PIN2, GPIO_FUNC_PWM);
+        pwm1_slice_num = pwm_gpio_to_slice_num(MTR1_PIN1);
+        pwm2_slice_num = pwm_gpio_to_slice_num(MTR1_PIN2);
     }
 
     // PWMコンフィグを編集

@@ -46,7 +46,9 @@
         "mtr.h": "c",
         "stdint.h": "c",
         "stdio.h": "c",
-        "gpio.h": "c"
+        "gpio.h": "c",
+        "cmath": "c",
+        "compare": "c"
     },
     "makefile.makePath": "C:\\Program Files (x86)\\GnuWin32\\bin"
 }

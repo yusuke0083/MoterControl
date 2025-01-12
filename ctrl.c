@@ -8,47 +8,47 @@
 #include "hardware/gpio.h"
 #include "hardware/pwm.h"
 #include "./Pin_number_pico.h"
+#include "hardware/adc.h"
 
 #include "./ctrl.h"
-//#include "hardware/adc.h"
+
 
 #endif
 
-//ADCのサンプル
-//#define ADC_PIN 26  // GPIO26 (ADC0)
-//#define VREF 3.3    // 基準電圧
+/* 定数定義 */
+#define VREF 3.3    // 基準電圧
+
+/* 内部変数 */
+int16_t ctr_xaxis = 0;
+int16_t ctr_yaxis = 0;
+float   ctr_xaxis_voltage  = 0;
+float   ctr_yaxis_voltage  = 0;
+
+/* 外部変数 */
+int16_t  Ctr_duty_xaxis     = 0;
+int16_t  Ctr_duty_yaxis     = 0;
+
 
 // 関数宣言
 
 void CRL_main(void){
 
-    /* Joystic */
+    //初期化
+    //stdio_init_all();  // 標準出力の初期化
+    adc_init();        // ADCの初期化
 
 
-    //ADCのサンプル
-    // stdio_init_all();  // 標準出力の初期化
-    // adc_init();        // ADCの初期化
-
-    // // ADC0にGPIO26を割り当て
-    // adc_gpio_init(ADC_PIN);
-
-    // // ADC0を選択
-    // adc_select_input(0);
-
-    // while (1) {
-    //     // ADCから生データを取得（12ビット：0～4095）
-    //     uint16_t raw_value = adc_read();
-
-    //     // 電圧に変換
-    //     float voltage = raw_value * VREF / 4095;
-
-    //     // 結果を出力
-    //     printf("Raw Value: %d, Voltage: %.2f V\n", raw_value, voltage);
-
-    //     sleep_ms(500);  // 0.5秒待機
-    //}
-
-
-
+    // ADC各チャンネルの電圧生データを取得（12ビット：0～4095）
+    adc_select_input(0);
+    ctr_xaxis = adc_read();
+    adc_select_input(1);
+    ctr_yaxis = adc_read();
+      
+    // 電圧をduty値に変換
+    Ctr_xaxis_voltage = ctr_xaxis / 4095;
+    Ctr_yaxis_voltage = ctr_yaxis / 4095;
+    
+    Ctr_duty_xaxis = floor(Ctr_xaxis_voltage *10);
+    Ctr_duty_yaxis = floor(Ctr_yaxis_voltage *10);
 
 }
